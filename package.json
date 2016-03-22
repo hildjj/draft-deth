@@ -2,11 +2,24 @@
   "name": "draft-hildebrand-deth",
   "author": {
     "name": "Joe Hildebrand",
-    "email": "jhildebr@cisco.com"
+    "email": "joe-github@cursive.net"
   },
+  "description": "DNS Editing Through HTTPS",
+  "homepage": "https://github.com/hildjj/draft-deth",
   "repository": {
     "type": "git",
-    "url": "cursivegit@git.cursive.net:deth"
+    "url": "git+https://github.com/hildjj/draft-deth.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hildjj/draft-deth/issues"
+  },
+  "keywords": [
+    "DNS",
+    "HTTPS",
+    "dynamic"
+  ],
+  "scripts": {
+    "start": "gulp"
   },
   "license": "SEE LICENSE IN http://trustee.ietf.org/docs/IETF-Trust-License-Policy.pdf",
   "devDependencies": {
