@@ -1,0 +1,6 @@
+{
+  "RTYPE": "AAAA",
+  "v6address": "::1",
+  "TTL": 3600,
+  "comment": "This is my home"
+}

@@ -1,0 +1,20 @@
+{
+  "name": "draft-hildebrand-deth",
+  "author": {
+    "name": "Joe Hildebrand",
+    "email": "jhildebr@cisco.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "cursivegit@git.cursive.net:deth"
+  },
+  "license": "SEE LICENSE IN http://trustee.ietf.org/docs/IETF-Trust-License-Policy.pdf",
+  "devDependencies": {
+    "del": "2.2",
+    "gulp": "3.9",
+    "gulp-live-server": "0.0",
+    "gulp-util": "3.0",
+    "open": "0.0",
+    "through2": "2.0"
+  }
+}

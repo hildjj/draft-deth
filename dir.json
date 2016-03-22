@@ -1,0 +1,18 @@
+{
+  "A": {
+    "URI": "https://example.com/deth/v1/A/",
+    "methods": ["PUT", "DELETE"]
+  },
+  "AAAA": {
+    "URI": "https://example.com/deth/v1/AAAA/",
+    "methods": ["PUT"]
+  },
+  "SRV": {
+    "URI": "https://example.com/deth/v1/example.com/SRV/",
+    "methods": ["PUT", "DELETE"]
+  },
+  "TYPE255": {
+    "URI": "https://example.com/deth/v1/example.com/TYPE255/",
+    "methods": ["PUT", "DELETE"]
+  }
+}

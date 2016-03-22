@@ -1,0 +1,16 @@
+directory = {
+  * rrtype => edit_details
+}
+
+rrtype =  "A" / "AAAA" / "CNAME" / "NS" / "PTR" / "MX" /
+          "TXT" / "SPF" / "SRV" /
+          rrtype_num
+
+rrtype_num = tstr .regexp "TYPE\\d+"
+
+edit_details = {
+  URI: tstr,
+  methods: [+ method_name]
+}
+
+method_name = "GET" / "PUT" / "DELETE"
