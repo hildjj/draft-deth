@@ -2,6 +2,10 @@
 
 DETH: DNS Editing Through HTTPS
 
+## Editor's version
+
+See http://hildjj.github.io/draft-deth/ for the most current version.
+
 ## Installation
 
 To start editing:
