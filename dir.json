@@ -1,18 +1,36 @@
 {
-  "A": {
-    "URI": "https://example.com/deth/v1/A/",
-    "methods": ["PUT", "DELETE"]
-  },
-  "AAAA": {
-    "URI": "https://example.com/deth/v1/AAAA/",
-    "methods": ["PUT"]
-  },
-  "SRV": {
-    "URI": "https://example.com/deth/v1/example.com/SRV/",
-    "methods": ["PUT", "DELETE"]
-  },
-  "TYPE255": {
-    "URI": "https://example.com/deth/v1/example.com/TYPE255/",
-    "methods": ["PUT", "DELETE"]
+  "resources": {
+    "http://example.com/deth/A": {
+      "href-template": "A/{dns_label}",
+      "href-vars": {
+        "dns_label": "http://example.org/deth/A/label"
+      },
+      "hints": {
+        "allow": ["GET", "PUT", "DELETE"]
+    },
+    "http://example.com/deth/AAAA": {
+      "href-template": "AAAA/{dns_label}",
+      "href-vars": {
+        "dns_label": "http://example.org/deth/AAAA/label"
+      },
+      "hints": {
+        "allow": ["GET", "PUT", "DELETE"]
+    },
+    "http://example.com/deth/SRV": {
+      "href-template": "SRV/{dns_label}",
+      "href-vars": {
+        "dns_label": "http://example.org/deth/SRV/label"
+      },
+      "hints": {
+        "allow": ["GET", "PUT", "DELETE"]
+    },
+    "http://example.com/deth/TYPE255": {
+      "href-template": "TYPE255/{dns_label}",
+      "href-vars": {
+        "dns_label": "http://example.org/deth/TYPE255/label"
+      },
+      "hints": {
+        "allow": ["GET", "PUT", "DELETE"]
+    },
   }
 }
