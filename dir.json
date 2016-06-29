@@ -1,6 +1,6 @@
 {
   "resources": {
-    "http://example.com/deth/A": {
+    "tag:deth@ietf.org,v1:A": {
       "href-template": "A/{dns_label}",
       "href-vars": {
         "dns_label": "http://example.org/deth/A/label"
@@ -8,7 +8,7 @@
       "hints": {
         "allow": ["GET", "PUT", "DELETE"]
     },
-    "http://example.com/deth/AAAA": {
+    "tag:deth@ietf.org,v1:AAAA": {
       "href-template": "AAAA/{dns_label}",
       "href-vars": {
         "dns_label": "http://example.org/deth/AAAA/label"
@@ -16,7 +16,7 @@
       "hints": {
         "allow": ["GET", "PUT", "DELETE"]
     },
-    "http://example.com/deth/SRV": {
+    "tag:deth@ietf.org,v1:SRV": {
       "href-template": "SRV/{dns_label}",
       "href-vars": {
         "dns_label": "http://example.org/deth/SRV/label"
@@ -24,7 +24,7 @@
       "hints": {
         "allow": ["GET", "PUT", "DELETE"]
     },
-    "http://example.com/deth/TYPE255": {
+    "tag:deth@ietf.org,v1:TYPE255": {
       "href-template": "TYPE255/{dns_label}",
       "href-vars": {
         "dns_label": "http://example.org/deth/TYPE255/label"
