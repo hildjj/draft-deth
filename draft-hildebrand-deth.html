@@ -405,8 +405,8 @@
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Hildebrand, J. and P. Hoffman" />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-hildebrand-deth-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2016-3-22" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-hildebrand-deth-01" />
+  <meta name="dct.issued" scheme="ISO8601" content="2016-8-02" />
   <meta name="dct.abstract" content="There is a strong desire in many communities for service operators to be able to dynamically update DNS records in an easy-to-deploy, standardized method. For example, operating SIP requires DNS records to be added and updated as the SIP service starts and is moved among different servers. This document describes an HTTPS-based mechanism for service operators who are authorized by their DNS administrator to add, change, and delete DNS records." />
   <meta name="description" content="There is a strong desire in many communities for service operators to be able to dynamically update DNS records in an easy-to-deploy, standardized method. For example, operating SIP requires DNS records to be added and updated as the SIP service starts and is moved among different servers. This document describes an HTTPS-based mechanism for service operators who are authorized by their DNS administrator to add, change, and delete DNS records." />
 
@@ -430,12 +430,12 @@
   <td class="right">P. Hoffman</td>
 </tr>
 <tr>
-  <td class="left">Expires: September 23, 2016</td>
+  <td class="left">Expires: February 3, 2017</td>
   <td class="right">ICANN</td>
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">March 22, 2016</td>
+  <td class="right">August 02, 2016</td>
 </tr>
 
     	
@@ -443,7 +443,7 @@
   </table>
 
   <p class="title">DNS Editing Through HTTPS (DETH)<br />
-  <span class="filename">draft-hildebrand-deth-00</span></p>
+  <span class="filename">draft-hildebrand-deth-01</span></p>
   
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
@@ -455,7 +455,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 23, 2016.</p>
+<p>This Internet-Draft will expire on February 3, 2017.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -522,7 +522,7 @@
 <p id="rfc.section.2.1.p.2">For example, to find the DETH server for the &#8220;example.com&#8221; zone, the query would have a QNAME of &#8220;_deth.example.com&#8221; and a QTYPE of TXT. A command-line equivalent would be:</p>
 <pre>
 $ dig +short TXT _deth.example.com
-https://example.com/deth/v1/
+https://example.com/deth/
 </pre>
 <p id="rfc.section.2.1.p.3">If no TXT record is found for a name, the client can assume that the parent does not implement the DETH protocol.  However, explicit configuration might still allow a client to find a DETH server.</p>
 <p id="rfc.section.2.1.p.4">If the DETH server is found using the DNS lookup described here, the client MUST perform the following checks before using the result:</p>
@@ -535,70 +535,67 @@ https://example.com/deth/v1/
   <li>Ensure that the DETH server&#8217;s certificate is signed by a trusted Certificate Authority.</li>
 </ul>
 <h1 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a> <a href="#directory" id="directory">Determining Authorized Edits</a></h1>
-<p id="rfc.section.2.2.p.1">The DETH client does an HTTPS GET request to the DETH server go get a list of edits that the client is authorized to perform. For example:</p>
+<p id="rfc.section.2.2.p.1">The DETH client does an HTTPS GET request to the DETH server to get a JSON-formatted &#8220;home document&#8221; (<a href="#I-D.nottingham-json-home">[I-D.nottingham-json-home]</a>) describing the edits that the client is authorized to perform. For example:</p>
 <pre>
-curl -X GET https://example.com/deth/v1/
+curl -X GET https://example.com/deth/
 </pre>
 <p id="rfc.section.2.2.p.2">Might return:</p>
 <div id="rfc.figure.1"/>
 <div id="example-dir"/>
 <pre>
 {
-  "A": {
-    "URI": "https://example.com/deth/v1/A/",
-    "methods": ["PUT", "DELETE"]
-  },
-  "AAAA": {
-    "URI": "https://example.com/deth/v1/AAAA/",
-    "methods": ["PUT"]
-  },
-  "SRV": {
-    "URI": "https://example.com/deth/v1/example.com/SRV/",
-    "methods": ["PUT", "DELETE"]
-  },
-  "TYPE255": {
-    "URI": "https://example.com/deth/v1/example.com/TYPE255/",
-    "methods": ["PUT", "DELETE"]
+  "resources": {
+    "tag:deth@ietf.org,2016-08-02:A": {
+      "href-template": "A/{label}",
+      "href-vars": {
+        "label": "tag:deth@ietf.org,2016-08-02:label"
+      },
+      "hints": {
+        "allow": ["GET", "PUT", "DELETE"]
+    },
+    "tag:deth@ietf.org,2016-08-02:AAAA": {
+      "href-template": "AAAA/{label}",
+      "href-vars": {
+        "label": "tag:deth@ietf.org,2016-08-02:label"
+      },
+      "hints": {
+        "allow": ["GET", "PUT", "DELETE"]
+    },
+    "tag:deth@ietf.org,2016-08-02:SRV": {
+      "href-template": "SRV/{label}",
+      "href-vars": {
+        "label": "tag:deth@ietf.org,2016-08-02:label"
+      },
+      "hints": {
+        "allow": ["GET", "PUT", "DELETE"]
+    },
+    "tag:deth@ietf.org,2016-08-02:TYPE255": {
+      "href-template": "TYPE255/{label}",
+      "href-vars": {
+        "label": "tag:deth@ietf.org,2016-08-02:label"
+      },
+      "hints": {
+        "allow": ["GET", "PUT", "DELETE"]
+    },
   }
 }
 </pre>
-<p class="figure">Figure 1: Directory Example</p>
-<p id="rfc.section.2.2.p.3">The valid keys for the top level JSON object are a popular subset of <a href="#IANA-rrtypes">[IANA-rrtypes]</a>, plus a mechanism for supporting all other RDATA.  The response is formally described in CDDL <a href="#I-D.greevenbosch-appsawg-cbor-cddl">[I-D.greevenbosch-appsawg-cbor-cddl]</a> as:</p>
-<div id="rfc.figure.2"/>
-<div id="directory-cddl"/>
-<pre>
-directory = {
-  * rrtype =&gt; edit_details
-}
-
-rrtype =  "A" / "AAAA" / "CNAME" / "NS" / "PTR" / "MX" /
-          "TXT" / "SPF" / "SRV" /
-          rrtype_num
-
-rrtype_num = tstr .regexp "TYPE\\d+"
-
-edit_details = {
-  URI: tstr,
-  methods: [+ method_name]
-}
-
-method_name = "GET" / "PUT" / "DELETE"
-</pre>
-<p class="figure">Figure 2: DETH Directory CDDL</p>
+<p class="figure">Figure 1: Home Document Example</p>
+<p id="rfc.section.2.2.p.3">The valid keys for the top level JSON object are a popular subset of <a href="#IANA-rrtypes">[IANA-rrtypes]</a>, plus a mechanism for supporting all other RDATA.</p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#authentication-and-authorization" id="authentication-and-authorization">Authentication and Authorization</a></h1>
 <p id="rfc.section.3.p.1">All requests are authenticated either by by HTTP Digest <a href="#RFC7235">[RFC7235]</a> and OAUTH <a href="#RFC6749">[RFC6749]</a>.  Parameters supported for either of these mechanisms are determined by the DETH Server.  This document makes no recommendations for best authentication practices beyond what have already been described in other documents published by the IETF.</p>
 <p id="rfc.section.3.p.2">After the DETH server authenticates a user, it determines which actions that user is authorized to make. If using HTTP Digest, the authorization policy probably comes from a database. If using OAUTH, that determination might be part of the OAUTH interaction.</p>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#formingURL" id="formingURL">Forming Request URIs</a></h1>
-<p id="rfc.section.4.p.1">When a client wants to edit a particular DNS record, it appends the full name of the record to the URI for the RTYPE found in the directory JSON (see <a href="#directory">Section 2.2</a>).  For example, if the directory JSON was that specified in <a href="#example-dir">Figure 1</a>, and the client wanted to edit a <samp>AAAA</samp> record for <samp>foo.example.com</samp>, the URL would be</p>
+<p id="rfc.section.4.p.1">When a client wants to edit a particular DNS record, it inserts the full name of the record into the URI template for the RTYPE found in the directory JSON (see <a href="#directory">Section 2.2</a>), in the parameter with the URI &#8220;tag:deth@ietf.org,2016-08-02:label&#8221;.  For example, if the directory JSON was that specified in <a href="#example-dir">Figure 1</a>, and the client wanted to edit a <samp>AAAA</samp> record for <samp>foo.example.com</samp>, the URL would be</p>
 <pre>
-https://example.com/deth/v1/AAAA/foo.example.com
+https://example.com/deth/AAAA/foo.example.com
 </pre>
-<p id="rfc.section.4.p.2">TODO: specify more rules about URL combination to avoid attacks.</p>
+<p id="rfc.section.4.p.2">TODO: specify more rules about URL combination and escaping to avoid attacks.</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#record-editing" id="record-editing">Record Editing</a></h1>
 <p id="rfc.section.5.p.1">This section describes the semantics of requests to edit DNS records.  The specification covers how to specify which edits are desired, but does not yet cover how the DNS server deals with updating SOA records, nor how any DNSSEC records would need to be updated.</p>
 <h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#encoding-in-json" id="encoding-in-json">Encoding in JSON</a></h1>
 <p id="rfc.section.5.1.p.1">The JSON sent to the URIs formed according to the rules in <a href="#formingURL">Section 4</a> looks like:</p>
-<div id="rfc.figure.3"/>
+<div id="rfc.figure.2"/>
 <div id="example-update"/>
 <pre>
 {
@@ -608,9 +605,9 @@ https://example.com/deth/v1/AAAA/foo.example.com
   "comment": "This is my home"
 }
 </pre>
-<p class="figure">Figure 3: Update Example</p>
-<p id="rfc.section.5.1.p.2">All of the potential updates are specified by the following CDDL:</p>
-<div id="rfc.figure.4"/>
+<p class="figure">Figure 2: Update Example</p>
+<p id="rfc.section.5.1.p.2">All of the potential updates are specified by the following CDDL (see <a href="#I-D.greevenbosch-appsawg-cbor-cddl">[I-D.greevenbosch-appsawg-cbor-cddl]</a>):</p>
+<div id="rfc.figure.3"/>
 <div id="update-cddl"/>
 <pre>
 update = A_update / AAAA_update / CNAME_update / NS_update /
@@ -679,23 +676,23 @@ common = (
   ? comment: tstr
 )
 </pre>
-<p class="figure">Figure 4: DETH Update CDDL</p>
+<p class="figure">Figure 3: DETH Update CDDL</p>
 <p id="rfc.section.5.1.p.3">For updates that match the rrtype_update syntax, the rules for encoding RDATA from <a href="#RFC3597">[RFC3597]</a> are used.</p>
 <h1 id="rfc.section.5.2"><a href="#rfc.section.5.2">5.2.</a> <a href="#getting-records" id="getting-records">Getting Records</a></h1>
 <p id="rfc.section.5.2.p.1">Sending <samp>GET</samp> requests to the URIs formed in <a href="#formingURL">Section 4</a> is supported in order to allow clients more easily edit records.</p>
 <p id="rfc.section.5.2.p.2">TODO: The response types for <samp>GET</samp> responses will be specified in a future version of this document.</p>
 <h1 id="rfc.section.5.3"><a href="#rfc.section.5.3">5.3.</a> <a href="#create" id="create">Creating Records</a></h1>
-<p id="rfc.section.5.3.p.1">A new record is created by sending the desired JSON document that matches <a href="#update-cddl">Figure 4</a> to the URI formed by the rules in <a href="#formingURL">Section 4</a>, using the <samp>POST</samp> HTTP verb.</p>
+<p id="rfc.section.5.3.p.1">A new record is created by sending the desired JSON document that matches <a href="#update-cddl">Figure 3</a> to the URI formed by the rules in <a href="#formingURL">Section 4</a>, using the <samp>POST</samp> HTTP verb.</p>
 <p id="rfc.section.5.3.p.2">If a TTL is not sent with the request, a system default will be used.  The response from this <samp>PUT</samp> will be the JSON form of the record, as inserted.  This response MUST have the TTL included.</p>
 <h1 id="rfc.section.5.4"><a href="#rfc.section.5.4">5.4.</a> <a href="#delete" id="delete">Deleting Records</a></h1>
-<p id="rfc.section.5.4.p.1">A new record is created by sending the desired JSON document that matches <a href="#update-cddl">Figure 4</a> to the URI formed by the rules in <a href="#formingURL">Section 4</a>, using the <samp>DELETE</samp> HTTP verb.</p>
+<p id="rfc.section.5.4.p.1">A new record is created by sending the desired JSON document that matches <a href="#update-cddl">Figure 3</a> to the URI formed by the rules in <a href="#formingURL">Section 4</a>, using the <samp>DELETE</samp> HTTP verb.</p>
 <p id="rfc.section.5.4.p.2">Currently, this will delete all matching records.  TODO: Once matching rules have been defined in a later version of this document, individual record deleting may be allowed.</p>
 <h1 id="rfc.section.5.5"><a href="#rfc.section.5.5">5.5.</a> <a href="#updating-records" id="updating-records">Updating Records</a></h1>
 <p id="rfc.section.5.5.p.1">Updating records in place is not yet specified.  A prerequisite for this feature will be a way to match existing records, so that only one of several existing records with the same name and RTYPE will be modified.</p>
 <p id="rfc.section.5.5.p.2">For now, a combination of request as specified in <a href="#delete">Section 5.4</a> and <a href="#create">Section 5.3</a> may be used.</p>
 <p id="rfc.section.5.5.p.3">TODO: Add matching feature or change this section.</p>
 <h1 id="rfc.section.5.6"><a href="#rfc.section.5.6">5.6.</a> <a href="#return-codes-and-errors" id="return-codes-and-errors">Return Codes and Errors</a></h1>
-<p id="rfc.section.5.6.p.1">Errors use the approach from <a href="#I-D.ietf-appsawg-http-problem">[I-D.ietf-appsawg-http-problem]</a>.</p>
+<p id="rfc.section.5.6.p.1">Errors use the approach from <a href="#RFC7807">[RFC7807]</a>.</p>
 <p id="rfc.section.5.6.p.2">TODO: Error information will be specified in a future revision of this document.</p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
 <p id="rfc.section.6.p.1">No new IANA registries are expected.</p>
@@ -760,21 +757,27 @@ common = (
     </tr>
     <tr>
       <td class="reference">
-        <b id="I-D.ietf-appsawg-http-problem">[I-D.ietf-appsawg-http-problem]</b>
+        <b id="I-D.nottingham-json-home">[I-D.nottingham-json-home]</b>
       </td>
-      <td class="top"><a>mnot, m.</a> and <a>E. Wilde</a>, "<a href="http://tools.ietf.org/html/draft-ietf-appsawg-http-problem-03">Problem Details for HTTP APIs</a>", Internet-Draft draft-ietf-appsawg-http-problem-03, January 2016.</td>
+      <td class="top"><a>Nottingham, M.</a>, "<a href="http://tools.ietf.org/html/draft-nottingham-json-home-04">Home Documents for HTTP APIs</a>", Internet-Draft draft-nottingham-json-home-04, May 2016.</td>
     </tr>
     <tr>
       <td class="reference">
-        <b id="draft-jennings-app-dns-update">[draft-jennings-app-dns-update]</b>
+        <b id="I-D.jennings-app-dns-update">[I-D.jennings-app-dns-update]</b>
       </td>
-      <td class="top"><a>Jennings, C.</a>, <a>Daly, T.</a> and <a>J. Hitchcock</a>, "<a href="https://tools.ietf.org/html/draft-jennings-app-dns-update">HTTP API for Updating DNS Records</a>", 2009.</td>
+      <td class="top"><a>Jennings, C.</a>, <a>Daly, T.</a> and <a>J. Hitchcock</a>, "<a href="http://tools.ietf.org/html/draft-jennings-app-dns-update-02">HTTP API for Updating DNS Records</a>", Internet-Draft draft-jennings-app-dns-update-02, March 2009.</td>
     </tr>
     <tr>
       <td class="reference">
         <b id="RFC3007">[RFC3007]</b>
       </td>
       <td class="top"><a>Wellington, B.</a>, "<a href="http://tools.ietf.org/html/rfc3007">Secure Domain Name System (DNS) Dynamic Update</a>", RFC 3007, DOI 10.17487/RFC3007, November 2000.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC7807">[RFC7807]</b>
+      </td>
+      <td class="top"><a>Nottingham, M.</a> and <a>E. Wilde</a>, "<a href="http://tools.ietf.org/html/rfc7807">Problem Details for HTTP APIs</a>", RFC 7807, DOI 10.17487/RFC7807, March 2016.</td>
     </tr>
     <tr>
       <td class="reference">
@@ -797,7 +800,7 @@ common = (
   </tbody>
 </table>
 <h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#acknowledgements" id="acknowledgements">Acknowledgements</a></h1>
-<p id="rfc.section.A.p.1">This document borrows heavily from many earlier protocols.  Some of the text of this document is liberally lifted from the long-expired <a href="#draft-jennings-app-dns-update">[draft-jennings-app-dns-update]</a>.</p>
+<p id="rfc.section.A.p.1">This document borrows heavily from many earlier protocols.  Some of the text of this document is liberally lifted from the long-expired <a href="#I-D.jennings-app-dns-update">[I-D.jennings-app-dns-update]</a>.</p>
 <h1 id="rfc.authors">
   <a href="#rfc.authors">Authors' Addresses</a>
 </h1>
