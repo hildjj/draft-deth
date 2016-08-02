@@ -1,7 +1,7 @@
 ---
 title: DNS Editing Through HTTPS (DETH)
 abbrev: I-D
-docname: draft-hildebrand-deth-00
+docname: draft-hildebrand-deth-01
 category: info
 ipr: trust200902
 
@@ -28,23 +28,10 @@ normative:
 
 informative:
   I-D.greevenbosch-appsawg-cbor-cddl:
-  I-D.draft-ietf-appsawg-http-problem-03:
-  I-D.draft-nottingham-json-home:
-  draft-jennings-app-dns-update:
-    title: HTTP API for Updating DNS Records
-    author:
-      -
-        ins: C. Jennings
-        name: Cullen Jennings
-      -
-        ins: T. Daly
-        name: Tom Daly
-      -
-        ins: J. Hitchcock
-        name: Jeremy Hitchcock
-    target: https://tools.ietf.org/html/draft-jennings-app-dns-update
-    date: 2009
+  I-D.nottingham-json-home:
+  I-D.jennings-app-dns-update:
   RFC3007:
+  RFC7807:
   dig:
     title: dig utility
     author:
@@ -79,7 +66,16 @@ change, and delete DNS records.
 
 <!--
 
-Notes between Joe and Paul go here
+Notes between authors go here
+
+(some may be OBE, Joe to check)
+- Should section 2.1 reference DANE?
+- Should we call the directory URI be called an "endpoint"?
+- lowercase "URI" in directory
+- in 2.2, client MUST NOT try to edit something not mentioned in directory
+- section 3 needs to be more proscriptive because libraries
+- section 4 needs to use rfc6570, URI templates, and describe what to do
+  with IDNs (send punycode)
 
 -->
 
@@ -237,7 +233,7 @@ following checks before using the result:
 ## Determining Authorized Edits {#directory}
 
 The DETH client does an HTTPS GET request to the DETH server
-to get a JSON-formatted "home document" ({{I-D.draft-nottingham-json-home}})
+to get a JSON-formatted "home document" ({{I-D.nottingham-json-home}})
 describing the
 edits that the client is authorized to perform. For example:
 
@@ -269,9 +265,10 @@ OAUTH interaction.
 
 # Forming Request URIs {#formingURL}
 
-When a client wants to edit a particular DNS record, it appends the full name of
-the record to the URI for the RTYPE found in the directory JSON (see
-{{directory}}).  For example, if the directory JSON was that specified in
+When a client wants to edit a particular DNS record, it inserts the full name of
+the record into the URI template for the RTYPE found in the directory JSON (see
+{{directory}}), in the parameter with the URI "tag:deth@ietf.org,2016-08-02:label".
+For example, if the directory JSON was that specified in
 {{example-dir}}, and the client wanted to edit a `AAAA` record for
 `foo.example.com`, the URL would be
 
@@ -279,7 +276,7 @@ the record to the URI for the RTYPE found in the directory JSON (see
 https://example.com/deth/AAAA/foo.example.com
 ~~~
 
-TODO: specify more rules about URL combination to avoid attacks.
+TODO: specify more rules about URL combination and escaping to avoid attacks.
 
 # Record Editing
 
@@ -350,7 +347,7 @@ TODO: Add matching feature or change this section.
 
 ##  Return Codes and Errors
 
-Errors use the approach from {{I-D.ietf-appsawg-http-problem}}.
+Errors use the approach from {{RFC7807}}.
 
 TODO: Error information will be specified in a future revision of this document.
 
@@ -369,4 +366,4 @@ allowed by this specification MUST be authorized using the model described.
 
 This document borrows heavily from many earlier protocols.
 Some of the text of this document is liberally lifted from
-the long-expired {{draft-jennings-app-dns-update}}.
+the long-expired {{I-D.jennings-app-dns-update}}.
