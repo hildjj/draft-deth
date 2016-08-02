@@ -295,7 +295,7 @@ like:
 ~~~
 {: #example-update title="Update Example"}
 
-All of the potential updates are specified by the following CDDL:
+All of the potential updates are specified by the following CDDL (see {{I-D.greevenbosch-appsawg-cbor-cddl}}):
 
 ~~~ cddl
 {::include deth-update.cddl}
