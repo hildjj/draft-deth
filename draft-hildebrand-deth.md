@@ -29,6 +29,7 @@ normative:
 informative:
   I-D.greevenbosch-appsawg-cbor-cddl:
   I-D.draft-ietf-appsawg-http-problem-03:
+  I-D.draft-nottingham-json-home:
   draft-jennings-app-dns-update:
     title: HTTP API for Updating DNS Records
     author:
@@ -215,7 +216,7 @@ equivalent would be:
 
 ~~~ shell
 $ dig +short TXT _deth.example.com
-https://example.com/deth/v1/
+https://example.com/deth/
 ~~~
 
 If no TXT record is found for a name, the client can assume that the parent
@@ -235,11 +236,13 @@ following checks before using the result:
 
 ## Determining Authorized Edits {#directory}
 
-The DETH client does an HTTPS GET request to the DETH server go get a list of
+The DETH client does an HTTPS GET request to the DETH server
+to get a JSON-formatted "home document" ({{I-D.draft-nottingham-json-home}})
+describing the
 edits that the client is authorized to perform. For example:
 
 ~~~ shell
-curl -X GET https://example.com/deth/v1/
+curl -X GET https://example.com/deth/
 ~~~
 
 Might return:
@@ -247,17 +250,10 @@ Might return:
 ~~~ json
 {::include dir.json}
 ~~~
-{: #example-dir title="Directory Example"}
+{: #example-dir title="Home Document Example"}
 
 The valid keys for the top level JSON object are a popular subset of
 {{IANA-rrtypes}}, plus a mechanism for supporting all other RDATA.
-The response is formally described in CDDL
-{{I-D.greevenbosch-appsawg-cbor-cddl}} as:
-
-~~~ cddl
-{::include deth-dir.cddl}
-~~~
-{: #directory-cddl title="DETH Directory CDDL"}
 
 # Authentication and Authorization
 
@@ -280,7 +276,7 @@ the record to the URI for the RTYPE found in the directory JSON (see
 `foo.example.com`, the URL would be
 
 ~~~ shell
-https://example.com/deth/v1/AAAA/foo.example.com
+https://example.com/deth/AAAA/foo.example.com
 ~~~
 
 TODO: specify more rules about URL combination to avoid attacks.
