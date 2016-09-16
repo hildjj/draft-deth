@@ -1,7 +1,7 @@
 ---
 title: DNS Editing Through HTTPS (DETH)
 abbrev: I-D
-docname: draft-hildebrand-deth-00
+docname: draft-hildebrand-deth-01
 category: info
 ipr: trust200902
 
@@ -28,7 +28,6 @@ normative:
 
 informative:
   I-D.greevenbosch-appsawg-cbor-cddl:
-  I-D.draft-ietf-appsawg-http-problem-03:
   draft-jennings-app-dns-update:
     title: HTTP API for Updating DNS Records
     author:
@@ -44,6 +43,7 @@ informative:
     target: https://tools.ietf.org/html/draft-jennings-app-dns-update
     date: 2009
   RFC3007:
+  RFC7808:
   dig:
     title: dig utility
     author:
@@ -354,7 +354,7 @@ TODO: Add matching feature or change this section.
 
 ##  Return Codes and Errors
 
-Errors use the approach from {{I-D.ietf-appsawg-http-problem}}.
+Errors use the approach from {{RFC7808}}.
 
 TODO: Error information will be specified in a future revision of this document.
 
